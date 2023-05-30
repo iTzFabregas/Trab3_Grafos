@@ -76,7 +76,7 @@ void Graph::run() {
     // TRANSPOSIÇÃO DO GRAFO
     Graph gt = transpose();
 
-    // DFS DO VERTICE DE MAIOR TEMPO DE TERMINO
+    // DFS A PARTIR DOS ULTIMOS VERTICES E SEREM PROCESSADOS NO DFS ANTERIOR
     vector<bool> visitedTrans(num_vert, false);
     stack<int> curr;
     list<list<int>> elements;
@@ -87,6 +87,7 @@ void Graph::run() {
 
             gt.DFS(processed.top(), visitedTrans, curr);
 
+            // TODOS OS ELEMENTOS ENCONTRADOS NO DFS ATUAL FORMAM UM ELEMENTO FORTEMENTE CONEXO
             list<int> buffer;
             while(!curr.empty()) {
                 buffer.push_back(curr.top());
@@ -101,6 +102,7 @@ void Graph::run() {
     }
     elements.sort();
 
+    // PRINTA TODOS OS ELEMENTOS FORTEMENTE CONEXOS ENCONTRADOS NO GRAFO
     cout << cnt << endl;
     for (list<list<int>>::iterator it = elements.begin(); it != elements.end(); it++) {
         for (list<int>::iterator jt = it->begin(); jt != it->end(); jt++) {
