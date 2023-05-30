@@ -35,17 +35,17 @@ void Graph::sort() {
     }
 }
 
-void Graph::DFS(int vertex, vector<bool>& visited, vector<int>& timing, int& cnt) {
+void Graph::DFS(int vertex, vector<bool>& visited, stack<int>& processed) {
 
     visited[vertex] = true;
  
     for (int prox_v : graph_map[vertex]) {  
         if (prox_v >= 0 && !visited[prox_v]) {
-            DFS(prox_v, visited, timing, cnt);
+            DFS(prox_v, visited, processed);
         }
     }
 
-    timing[vertex] = cnt++;
+    processed.push(vertex);
 }
 
 Graph Graph::transpose() {
@@ -64,26 +64,49 @@ Graph Graph::transpose() {
 void Graph::run() {
 
     vector<bool> visited(num_vert, false);
-    vector<int> timing(num_vert, -1);
-    int cnt = 0;
+    stack<int> processed;
 
     // DFS PARA DETERMINAR O TEMPO DE TERMINO DE CADA VERTICE
     for (int i = 0; i < num_vert; i++) {
         if (!visited[i]) {
-            DFS(i, visited, timing, cnt);
+            DFS(i, visited, processed);
         }
-    }
-
-    for (int i = 0; i < num_vert; i++)
-    {
-        cout << timing[i] << endl;
     }
         
     // TRANSPOSIÇÃO DO GRAFO
     Graph gt = transpose();
 
     // DFS DO VERTICE DE MAIOR TEMPO DE TERMINO
-    
+    vector<bool> visitedTrans(num_vert, false);
+    stack<int> curr;
+    list<list<int>> elements;
+    int cnt = 0;
 
-    // OS VERTICES QUE 
+    while (!processed.empty()) {
+        if (!visitedTrans[processed.top()]) {
+
+            gt.DFS(processed.top(), visitedTrans, curr);
+
+            list<int> buffer;
+            while(!curr.empty()) {
+                buffer.push_back(curr.top());
+                curr.pop();
+            }
+            buffer.sort();
+            elements.push_back(buffer);
+            buffer.clear();
+            cnt++;
+        }
+        processed.pop();
+    }
+    elements.sort();
+
+    cout << cnt << endl;
+    for (list<list<int>>::iterator it = elements.begin(); it != elements.end(); it++) {
+        for (list<int>::iterator jt = it->begin(); jt != it->end(); jt++) {
+            cout << *jt << " ";
+        }
+        cout << endl;
+    }
+    
 }

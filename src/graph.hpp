@@ -5,8 +5,8 @@
 #include <map>
 #include <list>
 #include <vector>
-#include <algorithm>
-#include <queue>
+#include <cstring>
+#include <stack>
 
 using namespace std;
 
@@ -17,7 +17,7 @@ private:
     map<int, list<int>> graph_map;
 
     
-    void DFS(int vertex,  vector<bool>& visited, vector<int>& timing, int& cnt);
+    void DFS(int vertex,  vector<bool>& visited, stack<int>& processed);
 
     Graph transpose();
 

@@ -16,4 +16,4 @@ clean:
 	@rm -f *.o prog *.zip
 
 zip:
-	zip trab1.zip Makefile ./src/*.cpp ./lib/*.hpp
+	zip trab3.zip Makefile ./src/*.cpp ./src/*.hpp
