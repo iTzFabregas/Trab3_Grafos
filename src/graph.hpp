@@ -10,16 +10,16 @@
 
 using namespace std;
 
-typedef int VERTEX;
-
 class Graph {
 
 private:
     int num_vert;
-    map<VERTEX, list<VERTEX>> graph_map;
+    map<int, list<int>> graph_map;
 
     
-    void DFS(VERTEX vertex,  vector<bool>& visited, queue<VERTEX>& timing);
+    void DFS(int vertex,  vector<bool>& visited, vector<int>& timing, int& cnt);
+
+    Graph transpose();
 
 public:
     /**
@@ -39,7 +39,7 @@ public:
      * @param v1 um extremo da aresta
      * @param v2 o outro extremo da aresta
      */
-    void add_edge(VERTEX v1, VERTEX v2);
+    void add_edge(int v1, int v2);
 
     /**
      * @brief função para ordenar todas as listas de adjacência dos vertices

@@ -25,7 +25,7 @@ Graph Graph::read_info() {
     return graph;
 }
 
-void Graph::add_edge(VERTEX v1, VERTEX v2) {
+void Graph::add_edge(int v1, int v2) {
     graph_map[v1].push_back(v2);
 }
 
@@ -35,37 +35,55 @@ void Graph::sort() {
     }
 }
 
-void Graph::DFS(VERTEX vertex, vector<bool>& visited, queue<VERTEX>& timing) {
+void Graph::DFS(int vertex, vector<bool>& visited, vector<int>& timing, int& cnt) {
 
     visited[vertex] = true;
  
     for (int prox_v : graph_map[vertex]) {  
         if (prox_v >= 0 && !visited[prox_v]) {
-            DFS(prox_v, visited, timing);
+            DFS(prox_v, visited, timing, cnt);
         }
     }
 
-    timing.push(vertex);
+    timing[vertex] = cnt++;
+}
+
+Graph Graph::transpose() {
+    Graph gt(num_vert);
+
+    for (int i = 0; i < num_vert; i++) {
+        for (list<int>::iterator it = graph_map[i].begin(); it != graph_map[i].end(); it++) {
+            gt.add_edge(*it, i);
+        }
+    }
+
+    return gt;
+    
 }
 
 void Graph::run() {
 
     vector<bool> visited(num_vert, false);
-    queue<VERTEX> timing;
-    DFS(0, visited, timing);
-    cout << "oi" << endl;
+    vector<int> timing(num_vert, -1);
+    int cnt = 0;
 
-    while(!timing.empty())
-    {
-        cout << timing.front() << " ";
-        timing.pop();
-    }
-    
     // DFS PARA DETERMINAR O TEMPO DE TERMINO DE CADA VERTICE
+    for (int i = 0; i < num_vert; i++) {
+        if (!visited[i]) {
+            DFS(i, visited, timing, cnt);
+        }
+    }
 
+    for (int i = 0; i < num_vert; i++)
+    {
+        cout << timing[i] << endl;
+    }
+        
     // TRANSPOSIÇÃO DO GRAFO
+    Graph gt = transpose();
 
     // DFS DO VERTICE DE MAIOR TEMPO DE TERMINO
+    
 
     // OS VERTICES QUE 
 }
